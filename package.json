@@ -1,0 +1,37 @@
+{
+  "name": "react-form-package",
+  "version": "1.0.0",
+  "description": "Dynamic Form in React",
+  "main": "dist/bundle.js",
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rahilhastu/react-form-package.git"
+  },
+  "keywords": [
+    "react",
+    "form"
+  ],
+  "author": "RipperH",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rahilhastu/react-form-package/issues"
+  },
+  "homepage": "https://github.com/rahilhastu/react-form-package#readme",
+  "devDependencies": {
+    "@babel/preset-react": "^7.24.6",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.1.1",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.24.2",
+    "webpack-cli": "^4.5.0"
+  }
+}
