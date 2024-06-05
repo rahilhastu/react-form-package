@@ -232,6 +232,9 @@
   color: #000000;
 }
 
+.custom-multi-select-container:focus-within .custom-multi-select-dropdown {
+  display: block;
+}
 .form-group span.dropdown-icon {
   background: transparent;
   position: absolute;
