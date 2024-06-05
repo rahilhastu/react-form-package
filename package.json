@@ -1,7 +1,7 @@
 {
-  "name": "react-form-package",
+  "name": "dynamic-react-forms",
   "version": "1.0.0",
-  "description": "Dynamic Form in React",
+  "description": "A dynamic form component for React that allows you to quickly create forms with various input types, including text, email, password, number, checkbox, radio, select and multi-select. Supports customizable validators and custom buttons.",
   "main": "dist/bundle.js",
   "peerDependencies": {
     "react": "^18.3.1",
@@ -9,7 +9,6 @@
     "prop-types": "^15.7.2"
   },
   "scripts": {
-    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack"
   },
@@ -19,10 +18,21 @@
   },
   "keywords": [
     "react",
-    "form"
+    "form",
+    "dynamic",
+    "form-builder",
+    "form-validation",
+    "input",
+    "checkbox",
+    "radio",
+    "select",
+    "multi-select",
+    "validator",
+    "custom-button",
+    "form-component"
   ],
   "author": "RipperH",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/rahilhastu/react-form-package/issues"
   },
