@@ -14,7 +14,7 @@ const InputSelect = ({
   required = false,
 }) => {
   return (
-    <div class="custom-multi-select-container">
+    <div className="custom-multi-select-container">
       <input
         type="text"
         id="Counting"
