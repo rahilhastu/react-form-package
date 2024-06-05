@@ -2,32 +2,31 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./Form.css";
 
-const Input = ({
-  type,
+const InputSelect = ({
   name,
   id,
-  value,
   onChange,
   onBlur,
   label,
+  options,
   error,
   required = false,
-  ...props
 }) => {
   return (
     <>
-      <input
-        type={type}
+      <select
         id={id}
         name={name}
-        value={value}
         onChange={onChange}
         onBlur={onBlur}
-        placeholder=" "
         required={required}
-        autoComplete="on"
-        {...props}
-      />
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
       <label htmlFor={name} className={required ? "required-marker" : ""}>
         {label}
       </label>
@@ -36,11 +35,20 @@ const Input = ({
   );
 };
 
-Input.propTypes = {
-  type: PropTypes.string.isRequired,
+InputSelect.propTypes = {
   name: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  error: PropTypes.string,
+  required: PropTypes.bool,
 };
 
-export default Input;
+export default InputSelect;

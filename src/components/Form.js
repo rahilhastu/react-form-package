@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./Form.css";
 import Input from "./Input";
+import InputRadio from "./InputRadio";
+import InputCheckbox from "./InputCheckbox";
+import InputSelect from "./InputSelect";
+import InputSelectMulti from "./InputSelectMulti";
 
 const Form = ({
   form_title,
@@ -14,7 +18,10 @@ const Form = ({
       if (input.type !== "button") {
         acc[input.name] = input.initialvalue || "";
       }
-      if (input.type === "checkbox") {
+      if (
+        input.type === "checkbox" ||
+        (input.type === "select" && input.multiple)
+      ) {
         if (input.initialvalue) {
           acc[input.name] = input.initialvalue;
         } else {
@@ -32,7 +39,19 @@ const Form = ({
   const validateForm = (updatedFormData) => {
     const newErrors = {};
     inputs.forEach((input) => {
-      if (input.validators) {
+      if (
+        input.required &&
+        (input.type === "checkbox" ||
+          (input.type === "select" && input.multiple))
+      ) {
+        if (
+          !updatedFormData[input.name] ||
+          updatedFormData[input.name].length === 0
+        ) {
+          newErrors[input.name] = "Please select at least one option.";
+          return;
+        }
+      } else if (input.validators) {
         for (let validator of input.validators) {
           const error = validator(updatedFormData[input.name]);
           if (error) {
@@ -45,8 +64,15 @@ const Form = ({
     setErrors(newErrors);
     setErrorCount(Object.keys(newErrors).length);
     const isFormValid = inputs.every((field) => {
+      if (
+        field.required &&
+        (field.type === "checkbox" ||
+          (field.type === "select" && field.multiple))
+      ) {
+        return updatedFormData[field.name].length > 0;
+      }
       if (field.required) {
-        return updatedFormData[field.name].trim() !== "";
+        return updatedFormData[field.name] !== "";
       }
       return true;
     });
@@ -64,6 +90,29 @@ const Form = ({
       };
       setValues(updatedFormData);
       validateForm(updatedFormData);
+      return;
+    }
+    if (type === "select-multiple") {
+      const updatedFormData = {
+        ...values,
+        [name]: Array.from(e.target.selectedOptions, (option) => option.value),
+      };
+      setValues(updatedFormData);
+      validateForm(updatedFormData);
+
+      const selectedOptions = Array.from(e.target.selectedOptions);
+      const selectedValues = selectedOptions.map((option) => option.label);
+      const inputField = document.querySelector(`#${name}`);
+      const label = inputField.parentElement.querySelector("label");
+
+      inputField.value = selectedValues.join(", ");
+
+      if (selectedValues.length > 0) {
+        label.classList.add("label-float");
+      } else {
+        label.classList.remove("label-float");
+      }
+
       return;
     }
     const updatedFormData = {
@@ -116,31 +165,49 @@ const Form = ({
               >
                 {input.label}
               </button>
-            ) : input.type === "radio" || input.type === "checkbox" ? (
-              <>
-                <div className={input.type + "_label "}>
-                  <label>{input.label}</label>
-                </div>
-                <div className={input.type + "_group"}>
-                  {input.options.map((option) => (
-                    <div key={option}>
-                      <Input
-                        type={input.type}
-                        id={`${input.name}_${option}`}
-                        name={input.name}
-                        label={option}
-                        value={option}
-                        checked={
-                          Array.isArray(values[input.name])
-                            ? values[input.name].includes(option)
-                            : values[input.name] === option
-                        }
-                        onChange={handleChange}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </>
+            ) : input.type === "radio" ? (
+              <InputRadio
+                name={input.name}
+                label={input.label}
+                options={input.options}
+                value={values[input.name]}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched[input.name] ? errors[input.name] : ""}
+                required={input.required || false}
+              />
+            ) : input.type === "checkbox" ? (
+              <InputCheckbox
+                name={input.name}
+                label={input.label}
+                options={input.options}
+                values={values[input.name]}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched[input.name] ? errors[input.name] : ""}
+                required={input.required || false}
+              />
+            ) : input.type === "select" && !input.multiple ? (
+              <InputSelect
+                name={input.name}
+                label={input.label}
+                options={input.options}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched[input.name] ? errors[input.name] : ""}
+                required={input.required || false}
+                multiple={input.multiple || false}
+              />
+            ) : input.type === "select" && input.multiple ? (
+              <InputSelectMulti
+                name={input.name}
+                label={input.label}
+                options={input.options}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched[input.name] ? errors[input.name] : ""}
+                required={input.required || false}
+              />
             ) : (
               <Input
                 type={input.type}
@@ -155,7 +222,7 @@ const Form = ({
                     : input.label
                 }
                 error={touched[input.name] ? errors[input.name] : ""}
-                required={input.required}
+                required={input.required || false}
                 {...input}
               />
             )}
