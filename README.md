@@ -9,10 +9,8 @@ Supports customizable validators and custom buttons.
 You can install the package via npm:
 
 ```bash
-npm install dynamic-react-forms
+npm install dynamic-form-react
 ```
-
-````
 
 ## Usage
 
@@ -27,7 +25,7 @@ import {
   maxValue,
   number,
   email,
-} from "dynamic-react-forms";
+} from "dynamic-form-react";
 
 function App() {
   const is_equal_test = (input_str) =>
@@ -244,7 +242,7 @@ const onSubmit = (values) => {
 ### Using Validators
 
 ```javascript
-import { required, email } from "dynamic-react-forms";
+import { required, email } from "dynamic-form-react";
 
 const inputs = [
   {
@@ -369,4 +367,3 @@ If you have any feedback, suggestions, or issues, feel free to open an issue on 
 ## License
 
 This project is licensed under the MIT License.
-````
